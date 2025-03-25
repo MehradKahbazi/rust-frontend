@@ -1,5 +1,6 @@
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
+use gloo_console::log;
 
 use crate::components::input::Input;
 
@@ -25,10 +26,12 @@ pub fn login_form() -> Html {
         }
     });
 
-
-    let onsubmit = Callback::from(|e: SubmitEvent| {
+    let cloned_username = username.clone();
+    let cloned_password = password.clone();
+    let onsubmit = Callback::from(move |e: SubmitEvent| {
         e.prevent_default();
-        
+        log!(cloned_username.clone());
+        log!(cloned_password.clone());
     });
     html! {
         <form onsubmit={onsubmit}>
