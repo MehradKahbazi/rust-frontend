@@ -1,3 +1,4 @@
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
 use crate::components::input::Input;
@@ -6,14 +7,22 @@ use crate::components::input::Input;
 pub fn login_form() -> Html {
     let username_handle = use_state(String::default);
     let username = (*username_handle).clone();
-    let username_changed = Callback::from(|e: Event| {
 
+    let username_changed = Callback::from(move |e: Event| {
+        let target = e.target_dyn_into::<HtmlInputElement>();
+        if let Some(input) = target{
+            username_handle.set(input.value())
+        }
     });
 
     let password_handle = use_state(String::default);
     let password = (*password_handle).clone();
-    let password_changed = Callback::from(|e: Event| {
 
+    let password_changed = Callback::from(move |e: Event| {
+        let target = e.target_dyn_into::<HtmlInputElement>();
+        if let Some(input) = target{
+            password_handle.set(input.value())
+        }
     });
 
 
