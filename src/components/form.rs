@@ -1,8 +1,7 @@
 use web_sys::HtmlInputElement;
-use yew::prelude::*;
-use gloo_console::log;
+use yew::{platform::spawn_local, prelude::*};
 
-use crate::components::input::Input;
+use crate::{api::user::api_login, components::input::Input};
 
 #[function_component(LoginForm)]
 pub fn login_form() -> Html {
@@ -30,8 +29,11 @@ pub fn login_form() -> Html {
     let cloned_password = password.clone();
     let onsubmit = Callback::from(move |e: SubmitEvent| {
         e.prevent_default();
-        log!(cloned_username.clone());
-        log!(cloned_password.clone());
+        let cloned_username = cloned_username.clone();
+    let cloned_password = cloned_password.clone();
+        spawn_local(async move{
+           let _ = api_login(cloned_username.clone(), cloned_password.clone()).await;
+        });
     });
     html! {
         <form onsubmit={onsubmit}>
