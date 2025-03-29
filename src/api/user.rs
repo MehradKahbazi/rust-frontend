@@ -30,14 +30,10 @@ pub async fn api_login(username: String, password: String) -> Result<LoginRespon
 
 }
 
-pub async fn api_me(username: String, password: String) -> Result<MeResponse, Error>{
-    let response = Request::post(&format!("{}/login", APP_HOST))
-    .json(&json!(
-        {
-            "username": username,
-            "password": password
-        }
-    ))?.send().await?;
+pub async fn api_me(token: &String) -> Result<MeResponse, Error>{
+    let response = Request::get(&format!("{}/me", APP_HOST))
+    .header("Authorization", &format!("Bearer {}", token))
+    .send().await?;
 
     response.json::<MeResponse>().await
 }
